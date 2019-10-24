@@ -12,8 +12,8 @@ public class Game {
     Door switchDoor; // the remaining door to which the contestant can opt to switch.
     boolean originalChoiceWins;
     boolean switchWins;
-
     // the winning and picked doors are randomly selected; they can be the same door or different doors
+    public Game() {}
     Game(int gameNumber) {
         this.gameNumber = gameNumber;
         winningDoor = pickRandomDoor();
