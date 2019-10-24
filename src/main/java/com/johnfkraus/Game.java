@@ -35,7 +35,7 @@ public class Game {
 
     private void repInvariant() {
         // check for disallowed conditions
-        if(originalChoiceWins == switchWins) {
+        if (originalChoiceWins == switchWins) {
             throw new RuntimeException("The contestant can win by sticking with their original choice or by switching but not both.");
         }
         // When offering the contestant the chance to switch doors, Monty must not show the winning door
@@ -56,7 +56,6 @@ public class Game {
         int randomNumber = r.nextInt(doorArr.length);
         return doorArr[randomNumber];
     }
-
 
     // pick the goat door that Monty will open before offering to let contestant switch doors;
     // pick the (goat) door that Monty will open before offering to let contestant switch doors; If Monty can choose from two goat doors, he chooses one of the two randomly
@@ -86,7 +85,7 @@ public class Game {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Game #").append(gameNumber).append(", winningDoor = ").append(winningDoor).append(", pickedDoor = ").append(pickedDoor).append(", shownDoor ").append(shownDoor).append(", switchDoor = ").append(switchDoor)
-        .append(winningDoor == switchDoor ? ", switching wins" : "");
+            .append(winningDoor == switchDoor ? ", switching wins" : "");
         return sb.toString();
     }
 
