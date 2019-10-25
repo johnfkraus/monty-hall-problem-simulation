@@ -59,15 +59,14 @@ public class Game {
         }
     }
 
-    private static Door pickRandomDoor() {
-        // Random r = new Random();
+    private Door pickRandomDoor() {
         int randomNumber = (new Random()).nextInt(doorArr.length);
         return doorArr[randomNumber];
     }
 
     // pick the goat door that Monty will open before offering to let contestant switch doors;
     // pick the (goat) door that Monty will open before offering to let contestant switch doors; If Monty can choose from two goat doors, he chooses one of the two randomly
-    private static Door pickShownDoor(List<Door> doorList) {
+    private Door pickShownDoor(List<Door> doorList) {
         int randomNumber = (new Random()).nextInt(doorList.size());
         return doorList.get(randomNumber);
     }
