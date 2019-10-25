@@ -1,38 +1,29 @@
 package com.johnfkraus;
 
-import java.util.ArrayList;
-import java.util.List;
-
-enum Door {
-    ONE(1), TWO(2), THREE(3);
-    public final int doorNumber;
-
-    Door(int doorNumber) {
-        this.doorNumber = doorNumber;
-    }
-}
 
 class MontyHallProblemSimulation {
-    // all game objects will be stored in an ArrayList for printing results later
-    private List<Game> games = new ArrayList<>();
+    // all game objects will be stored in an ArrayList for printing results later NOT!
+    // private List<Game> games = new ArrayList<>();
     private int stayWins = 0;
     private int switchWins = 0;
+    private int gamesPlayed;
 
     private void run() {
-        int runs = 1000;
-        for (int i = 0; i < runs; i++) {
-            Game game = new Game(i + 1);
+        while(Game.gameNumber < 1000) {
+            Game game = new Game();
+            gamesPlayed++;
             if (game.originalChoiceWins) {
                 stayWins++;
-            }
-            if (game.switchWins) {
+            } else if (game.switchWins) {
                 switchWins++;
+            } else {
+                throw new RuntimeException("One and only one of the two strategies, switch or stay, must win.");
             }
-            games.add(game); // save for possible further analysis
+            //games.add(game); // save for possible further analysis
             System.out.println(game.toString());
         }
         // final results of all games
-        System.out.println("stayWins = " + stayWins + ", switchWins = " + switchWins + ", #games = " + games.size());
+        System.out.println("stayWins = " + stayWins + ", switchWins = " + switchWins + ", #games = " + gamesPlayed);
     }
 
     public static void main(String... args) {

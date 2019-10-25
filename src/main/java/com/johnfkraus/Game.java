@@ -3,19 +3,27 @@ package com.johnfkraus;
 import java.util.*;
 
 public class Game {
-    private int gameNumber;
-    private static Door[] doorArr = {Door.ONE, Door.TWO, Door.THREE}; // there are three doors from which to choose.
-    private List<Door> doorList = new ArrayList<>(Arrays.asList(doorArr)); // {Door.ONE, Door.TWO, Door.THREE}));
-    Door winningDoor; // the winning door, chosen at random; there is a new car behind this door; behind the other two doors are goats. Is it a little sad that no one ever wanted one of the goats?  If you had won a goat in on Let's Make a Deal in the 1960s you might still have a nice little herd of goats.  But if you won a 1960s-era car, if it didn't kill you it would for sure now be worthless and rusting away in some dump.  What ever happened to those goats, anyway?
+    enum Door {
+        ONE(1), TWO(2), THREE(3);
+        public final int doorNumber;
+        Door(int doorNumber) {
+            this.doorNumber = doorNumber;
+        }
+    }
+    static int gameNumber;
+    static Door[] doorArr = {Door.ONE, Door.TWO, Door.THREE}; // there are three doors from which to choose.
+    List<Door> doorList = new ArrayList<>(Arrays.asList(doorArr)); // {Door.ONE, Door.TWO, Door.THREE}));
+    Door winningDoor; // the winning door, chosen at random; there is a new car behind this door; behind the other two doors are goats. Is it a little sad that no one ever wanted one of the goats?  If you had won a goat in on Let's Make a Deal in the 1960s you might still have a nice little herd of goats.  But if you won a 1960s-era car, if it didn't kill you it would now be worthless and rusting away in some dump.  What ever happened to those goats, anyway?
     Door pickedDoor;
     Door shownDoor; // After the contestant chooses a door, Monty (always, we assume, perhaps unrealistically) opens a door behind which is a goat.  If the contestant's first choice was the door with the car, Monty will choose one of the two goat doors at random.  If the contestant's first choice was a goat door, Monty will show the other goat door.
     Door switchDoor; // the remaining door to which the contestant can opt to switch.
     boolean originalChoiceWins;
     boolean switchWins;
     // the winning and picked doors are randomly selected; they can be the same door or different doors
-    public Game() {}
-    Game(int gameNumber) {
-        this.gameNumber = gameNumber;
+    public Game() {
+    // Game(int gameNumber) {
+        // this.gameNumber = gameNumber;
+        gameNumber++;
         winningDoor = pickRandomDoor();
         pickedDoor = pickRandomDoor();
         doorList.remove(winningDoor);
@@ -52,16 +60,15 @@ public class Game {
     }
 
     private static Door pickRandomDoor() {
-        Random r = new Random();
-        int randomNumber = r.nextInt(doorArr.length);
+        // Random r = new Random();
+        int randomNumber = (new Random()).nextInt(doorArr.length);
         return doorArr[randomNumber];
     }
 
     // pick the goat door that Monty will open before offering to let contestant switch doors;
     // pick the (goat) door that Monty will open before offering to let contestant switch doors; If Monty can choose from two goat doors, he chooses one of the two randomly
     private static Door pickShownDoor(List<Door> doorList) {
-        Random r = new Random();
-        int randomNumber = r.nextInt(doorList.size());
+        int randomNumber = (new Random()).nextInt(doorList.size());
         return doorList.get(randomNumber);
     }
 
@@ -85,7 +92,7 @@ public class Game {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Game #").append(gameNumber).append(", winningDoor = ").append(winningDoor).append(", pickedDoor = ").append(pickedDoor).append(", shownDoor ").append(shownDoor).append(", switchDoor = ").append(switchDoor)
-            .append(winningDoor == switchDoor ? ", switching wins" : "");
+            .append(winningDoor == switchDoor ? ", switching wins" : "").append(", doorList.size = " + doorList.size());
         return sb.toString();
     }
 
