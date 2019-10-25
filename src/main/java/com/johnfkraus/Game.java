@@ -74,11 +74,9 @@ public class Game {
     // To which door can the contestant switch?  It's the door left after you take away the contestant's first choice door and the goat door Monty opened.
     private Door pickSwitchDoor() {
         Set<Door> allDoors = new HashSet<>(Arrays.asList(doorArr));
-        Set<Door> nonSwitchDoors = new HashSet<>();
-        nonSwitchDoors.add(pickedDoor); // Contestant can't switch to the door already chosen. That wouldn't be switching.
-        nonSwitchDoors.add(shownDoor); // Contestant can't/won't switch to the goat door Monty has opened
-        allDoors.removeAll(nonSwitchDoors);
-        // there should be only one door left in the allDoors Set, the door to which the contestant might switch.
+        allDoors.remove(pickedDoor); // Contestant can't switch to the door already chosen. That wouldn't be switching.
+        allDoors.remove(shownDoor); // Contestant can't/won't switch to the goat door Monty has opened
+        // there should be only one door left in the allDoors Set, the door to which the contestant might choose to switch.
         if (allDoors.size() != 1) {
             throw new RuntimeException("There should be only one door available to which contestant can switch.");
         }
