@@ -1,6 +1,5 @@
 package com.johnfkraus;
 
-
 class MontyHallProblemSimulation {
     // all game objects will be stored in an ArrayList for printing results later NOT!
     // private List<Game> games = new ArrayList<>();
@@ -19,7 +18,6 @@ class MontyHallProblemSimulation {
             } else {
                 throw new RuntimeException("One and only one of the two strategies, switch or stay, must win.");
             }
-            //games.add(game); // save for possible further analysis
             System.out.println(game.toString());
         }
         // final results of all games

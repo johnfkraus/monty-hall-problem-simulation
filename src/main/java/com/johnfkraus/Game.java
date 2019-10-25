@@ -20,7 +20,7 @@ public class Game {
     boolean originalChoiceWins;
     boolean switchWins;
     // the winning and picked doors are randomly selected; they can be the same door or different doors
-    public Game() {
+    Game() {
     // Game(int gameNumber) {
         // this.gameNumber = gameNumber;
         gameNumber++;
@@ -79,7 +79,7 @@ public class Game {
         allDoors.add(Door.TWO);
         allDoors.add(Door.THREE);
         Set<Door> nonSwitchDoors = new HashSet<>();
-        nonSwitchDoors.add(pickedDoor); // Contestant can't switch to the door already chosen.
+        nonSwitchDoors.add(pickedDoor); // Contestant can't switch to the door already chosen. That wouldn't be switching.
         nonSwitchDoors.add(shownDoor); // Contestant can't/won't switch to the goat door Monty has opened
         allDoors.removeAll(nonSwitchDoors);
         // there should be only one door left in the allDoors Set.
@@ -94,25 +94,5 @@ public class Game {
         sb.append("Game #").append(gameNumber).append(", winningDoor = ").append(winningDoor).append(", pickedDoor = ").append(pickedDoor).append(", shownDoor ").append(shownDoor).append(", switchDoor = ").append(switchDoor)
             .append(winningDoor == switchDoor ? ", switching wins" : "").append(", doorList.size = " + doorList.size());
         return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Game game = (Game) o;
-        return gameNumber == game.gameNumber &&
-            originalChoiceWins == game.originalChoiceWins &&
-            switchWins == game.switchWins &&
-            doorList.equals(game.doorList) &&
-            winningDoor == game.winningDoor &&
-            pickedDoor == game.pickedDoor &&
-            shownDoor == game.shownDoor &&
-            switchDoor == game.switchDoor;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(gameNumber, doorList, winningDoor, pickedDoor, shownDoor, switchDoor, originalChoiceWins, switchWins);
     }
 }
