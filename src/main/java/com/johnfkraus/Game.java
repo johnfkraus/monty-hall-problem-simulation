@@ -1,7 +1,6 @@
 package com.johnfkraus;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Game {
     enum Door {
@@ -12,7 +11,7 @@ public class Game {
         }
     }
     static int gameNumber;
-    static Door[] doorArr = {Door.ONE, Door.TWO, Door.THREE}; // There are three closed doors from which the contestant may choose.  Behind one door (the winning door) is a prize: a new car.  Behind the other two doors are goats.  We assume the contestant wants to win a car and doesn't want a goat.
+    static Door[] doorArr = {Door.ONE, Door.TWO, Door.THREE}; // There are three closed doors from which the contestant may choose.  Behind one door (the winning door) is the prize: a new car.  Behind the other two doors are goats.  We assume the contestant wants to win a car and doesn't want a goat.
     List<Door> doorList = new ArrayList<>(Arrays.asList(doorArr));
     Door winningDoor; // The winning door is chosen at random.  There is a new car behind this door; behind the other two doors are goats. Is it a little sad that no one ever wanted one of the goats?  If you had won a goat in on Let's Make a Deal in the 1960s you might still have a nice little herd of goats.  But if you won a 1960s-era car, if it didn't kill you it would now be a worthless rusting heap. What ever happened to those goats, anyway?
     Door pickedDoor; // The contestant picks a door.
@@ -43,13 +42,11 @@ public class Game {
     private void repInvariant() {
         // check for disallowed conditions
         if (originalChoiceWins == switchWins) {
-            throw new RuntimeException("The contestant can win by sticking with their original choice or by switching but not both.");
+            throw new RuntimeException("There is only one winning door.  After Monty opens one of the goat doors, there are only two choices for the contestant: stay or switch.  The contestant might choose the winning door by sticking with their original choice or by switching but not both.");
         }
-        // When offering the contestant the chance to switch doors, Monty must not show the winning door
         if (shownDoor == winningDoor) {
             throw new RuntimeException("When inviting the contestant to switch doors, Monty must not show the winning door before contestant has chance to switch doors.");
         }
-        // When inviting contestant to switch doors, Monty will not open the door initially picked by the contestant
         if (shownDoor == pickedDoor) {
             throw new RuntimeException("Monty must not show the door initially picked by the contestant until contestant has a chance to switch doors.");
         }
