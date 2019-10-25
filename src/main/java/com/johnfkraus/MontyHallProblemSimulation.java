@@ -1,8 +1,6 @@
 package com.johnfkraus;
 
 class MontyHallProblemSimulation {
-    // all game objects will be stored in an ArrayList for printing results later NOT!
-    // private List<Game> games = new ArrayList<>();
     private int stayWins = 0;
     private int switchWins = 0;
     private int gamesPlayed;

@@ -21,7 +21,6 @@ public class GameTest {
 
     @Test
     public void gameRepInvariant() {
-        // game = new Game();
         assertEquals(3, game.doorArr.length);
         assertTrue(game.doorList.size() <= 2);
         assertTrue(game.doorList.size() >= 1);

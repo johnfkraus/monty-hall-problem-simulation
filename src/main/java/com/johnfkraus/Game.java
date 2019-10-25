@@ -1,6 +1,7 @@
 package com.johnfkraus;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Game {
     enum Door {
@@ -11,18 +12,16 @@ public class Game {
         }
     }
     static int gameNumber;
-    static Door[] doorArr = {Door.ONE, Door.TWO, Door.THREE}; // there are three doors from which to choose.
-    List<Door> doorList = new ArrayList<>(Arrays.asList(doorArr)); // {Door.ONE, Door.TWO, Door.THREE}));
-    Door winningDoor; // the winning door, chosen at random; there is a new car behind this door; behind the other two doors are goats. Is it a little sad that no one ever wanted one of the goats?  If you had won a goat in on Let's Make a Deal in the 1960s you might still have a nice little herd of goats.  But if you won a 1960s-era car, if it didn't kill you it would now be worthless and rusting away in some dump.  What ever happened to those goats, anyway?
-    Door pickedDoor;
-    Door shownDoor; // After the contestant chooses a door, Monty (always, we assume, perhaps unrealistically) opens a door behind which is a goat.  If the contestant's first choice was the door with the car, Monty will choose one of the two goat doors at random.  If the contestant's first choice was a goat door, Monty will show the other goat door.
-    Door switchDoor; // the remaining door to which the contestant can opt to switch.
+    static Door[] doorArr = {Door.ONE, Door.TWO, Door.THREE}; // There are three closed doors from which the contestant may choose.  Behind one door (the winning door) is a prize: a new car.  Behind the other two doors are goats.  We assume the contestant wants to win a car and doesn't want a goat.
+    List<Door> doorList = new ArrayList<>(Arrays.asList(doorArr));
+    Door winningDoor; // The winning door is chosen at random.  There is a new car behind this door; behind the other two doors are goats. Is it a little sad that no one ever wanted one of the goats?  If you had won a goat in on Let's Make a Deal in the 1960s you might still have a nice little herd of goats.  But if you won a 1960s-era car, if it didn't kill you it would now be a worthless rusting heap. What ever happened to those goats, anyway?
+    Door pickedDoor; // The contestant picks a door.
+    Door shownDoor; // After the contestant chooses a door, Monty (always, we assume, perhaps unrealistically) opens a door behind which is a goat.  If the contestant's first choice of door (unbeknownst to the contestant) has a car hidden behind it, Monty will open one of the two goat doors selected at random.  If the contestant's first door choice was a goat door, Monty will open the other goat door, not the winning door.  On the actual TV show, Monty did not always offer the contestant a chance to switch doors, reports say.  See Wikipedia.
+    Door switchDoor; // The contestant has picked one door.  Monty has opened a different door to reveal a goat.  There is one remaining door to which the contestant can opt to switch, forsaking the contestant's originally selected door.
     boolean originalChoiceWins;
     boolean switchWins;
     // the winning and picked doors are randomly selected; they can be the same door or different doors
     Game() {
-    // Game(int gameNumber) {
-        // this.gameNumber = gameNumber;
         gameNumber++;
         winningDoor = pickRandomDoor();
         pickedDoor = pickRandomDoor();
@@ -38,7 +37,7 @@ public class Game {
         } else {
             throw new RuntimeException("Program logic error, apparently.");
         }
-        repInvariant(); // make sure Monty or the contestant didn't make a mistake
+        repInvariant(); // check for mistakes.
     }
 
     private void repInvariant() {
@@ -75,18 +74,26 @@ public class Game {
     private Door pickSwitchDoor() {
         Set<Door> allDoors = new HashSet<>(Arrays.asList(doorArr));
         allDoors.remove(pickedDoor); // Contestant can't switch to the door already chosen. That wouldn't be switching.
-        allDoors.remove(shownDoor); // Contestant can't/won't switch to the goat door Monty has opened
-        // there should be only one door left in the allDoors Set, the door to which the contestant might choose to switch.
+        allDoors.remove(shownDoor); // Contestant can't/won't switch to the goat door Monty has opened since the contestant wants the new car behind winning door.
         if (allDoors.size() != 1) {
-            throw new RuntimeException("There should be only one door available to which contestant can switch.");
+            throw new RuntimeException("There should be only one door available in the Set allDoors to which contestant may choose to switch.  allDoors.size() = " + allDoors.size());
         }
         return allDoors.iterator().next();
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Game #").append(gameNumber).append(", winningDoor = ").append(winningDoor).append(", pickedDoor = ").append(pickedDoor).append(", shownDoor ").append(shownDoor).append(", switchDoor = ").append(switchDoor)
-            .append(winningDoor == switchDoor ? ", switching wins" : ""); //.append(", doorList.size = " + doorList.size());
+        sb.append("Game #")
+            .append(gameNumber)
+            .append(", winningDoor = ")
+            .append(winningDoor)
+            .append(", pickedDoor = ")
+            .append(pickedDoor)
+            .append(", shownDoor ")
+            .append(shownDoor)
+            .append(", switchDoor = ")
+            .append(switchDoor)
+            .append(winningDoor == switchDoor ? ", switching wins" : "");
         return sb.toString();
     }
 }
