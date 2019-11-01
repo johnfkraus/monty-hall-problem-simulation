@@ -1,14 +1,13 @@
 package com.johnfkraus;
-
+/** Class to run multiple iterations of Game */
 class MontyHallProblemSimulation {
     private int stayWins = 0;
     private int switchWins = 0;
-    private int gamesPlayed;
+    private int numberOfGamesToPlay = 1000;
 
     private void run() {
-        while(Game.gameNumber < 1000) {
+        while(Game.gameNumber < numberOfGamesToPlay) {
             Game game = new Game();
-            gamesPlayed++;
             if (game.originalChoiceWins) {
                 stayWins++;
             } else if (game.switchWins) {
@@ -19,7 +18,8 @@ class MontyHallProblemSimulation {
             System.out.println(game.toString());
         }
         // final results of all games
-        System.out.println("stayWins = " + stayWins + ", switchWins = " + switchWins + ", #games = " + gamesPlayed);
+        // System.out.println("stayWins = " + stayWins + ", switchWins = " + switchWins + ", #games = " + Game.gameNumber);
+        System.out.println("stayWinsCount = " + Game.stayWinsCount + ", switchWinsCount = " + Game.switchWinsCount + ", #games = " + Game.gameNumber);
     }
 
     public static void main(String... args) {

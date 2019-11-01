@@ -6,12 +6,20 @@ public class Game {
     enum Door {
         ONE(1), TWO(2), THREE(3);
         public final int doorNumber;
+
         Door(int doorNumber) {
             this.doorNumber = doorNumber;
         }
     }
+
     static int gameNumber;
-    static Door[] doorArr = {Door.ONE, Door.TWO, Door.THREE}; // There are three closed doors from which the contestant may choose.  Behind one door (the winning door) is the prize: a new car.  Behind the other two doors are goats.  We assume the contestant wants to win a car and doesn't want a goat.
+    static int stayWinsCount;
+    static int switchWinsCount;
+
+    /**
+     * There are three closed doors from which the contestant may choose.  Behind one door (the winning door) is the prize: a new car.  Behind the other two doors are goats.  We assume the contestant wants to win a car and doesn't want a goat.
+     */
+    static Door[] doorArr = {Door.ONE, Door.TWO, Door.THREE};
     List<Door> doorList = new ArrayList<>(Arrays.asList(doorArr));
     Door winningDoor; // The winning door is chosen at random.  There is a new car behind this door; behind the other two doors are goats. Is it a little sad that no one ever wanted one of the goats?  If you had won a goat in on Let's Make a Deal in the 1960s you might still have a nice little herd of goats.  But if you won a 1960s-era car, if it didn't kill you it would now be a worthless rusting heap. What ever happened to those goats, anyway?
     Door pickedDoor; // The contestant picks a door.
@@ -19,6 +27,7 @@ public class Game {
     Door switchDoor; // The contestant has picked one door.  Monty has opened a different door to reveal a goat.  There is one remaining door to which the contestant can opt to switch, forsaking the contestant's originally selected door.
     boolean originalChoiceWins;
     boolean switchWins;
+
     // the winning and picked doors are randomly selected; they can be the same door or different doors
     Game() {
         gameNumber++;
@@ -31,8 +40,10 @@ public class Game {
 
         if (winningDoor == pickedDoor) {
             originalChoiceWins = true;
+            stayWinsCount++;
         } else if (winningDoor == switchDoor) {
             switchWins = true;
+            switchWinsCount++;
         } else {
             throw new RuntimeException("Program logic error, apparently.");
         }
