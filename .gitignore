@@ -33,3 +33,5 @@ build/
 doc/*
 *.class
 **/*.class
+.DS_Store
+
