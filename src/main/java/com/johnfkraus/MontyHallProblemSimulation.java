@@ -1,5 +1,8 @@
 package com.johnfkraus;
-/** Class to run multiple iterations of Game */
+
+/**
+ * Class to run multiple iterations of Game
+ */
 class MontyHallProblemSimulation {
     private int stayWins = 0;
     private int switchWins = 0;
@@ -22,6 +25,11 @@ class MontyHallProblemSimulation {
         System.out.println("stayWinsCount = " + Game.stayWinsCount + ", switchWinsCount = " + Game.switchWinsCount + ", #games = " + Game.gameNumber);
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String... args) {
         MontyHallProblemSimulation mh = new MontyHallProblemSimulation();
         mh.run();

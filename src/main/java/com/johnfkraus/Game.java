@@ -2,42 +2,98 @@ package com.johnfkraus;
 
 import java.util.*;
 
+/**
+ * The type Game.
+ */
 public class Game {
+    /**
+     * The enum Door.
+     */
     enum Door {
-        ONE(1), TWO(2), THREE(3);
+        /**
+         * One door.
+         */
+        ONE(1),
+        /**
+         * Two door.
+         */
+        TWO(2),
+        /**
+         * Three door.
+         */
+        THREE(3);
+        /**
+         * The Door number.
+         */
         public final int doorNumber;
         Door(int doorNumber) {
             this.doorNumber = doorNumber;
         }
     }
 
+    /**
+     * The Game number.
+     */
     static int gameNumber;
+    /**
+     * The Stay wins count.
+     */
     static int stayWinsCount;
+    /**
+     * The Switch wins count.
+     */
     static int switchWinsCount;
 
     /**
      * There are three closed doors from which the contestant may choose.  Behind one door (the winning door) is the prize: a new car.  Behind the other two doors are goats.  We assume the contestant wants to win a car and doesn't want a goat.
      */
     static Door[] doorArr = {Door.ONE, Door.TWO, Door.THREE};
-    // List<Door> allDoors = new ArrayList<>(Arrays.asList(doorArr));
-    List<Door> doorList = new ArrayList<>(Arrays.asList(doorArr));
-    //List<Door> doorList = new ArrayList<>(allDoors);
-    // { System.out.println((this.allDoors == this.doorList)); }
-    Door winningDoor; // The winning door is chosen at random.  There is a new car behind this door; behind the other two doors are goats. Is it a little sad that no one ever wanted one of the goats?  If you had won a goat in on Let's Make a Deal in the 1960s you might still have a nice little herd of goats.  But if you won a 1960s-era car, if it didn't kill you it would now be a worthless rusting heap. What ever happened to those goats, anyway?
-    Door pickedDoor; // The contestant picks a door.
-    Door shownDoor; // After the contestant chooses a door, Monty (always, we assume, perhaps unrealistically) opens a door behind which is a goat.  If the contestant's first choice of door (unbeknownst to the contestant) has a car hidden behind it, Monty will open one of the two goat doors selected at random.  If the contestant's first door choice was a goat door, Monty will open the other goat door, not the winning door.  On the actual TV show, Monty did not always offer the contestant a chance to switch doors, reports say.  See Wikipedia.
-    Door switchDoor; // The contestant has picked one door.  Monty has opened a different door to reveal a goat.  There is one remaining door to which the contestant can opt to switch, forsaking the contestant's originally selected door.
+    /**
+     * The Showable Door list.  The list from which Monty can choose a door to open for the contestant when
+     * offering contestant the opportunity to switch doors.  The door Monty opens when offering a switch must be (1) a door
+     * behind which is a goat (not the winning door); and (2) not the door initially chosen by the contestant.
+     */
+// List<Door> allDoors = new ArrayList<>(Arrays.asList(doorArr));
+    List<Door> showableDoorList = new ArrayList<>(Arrays.asList(doorArr));
+    /**
+     * The Winning door. The winning door is chosen at random.  There is a new car behind this door; behind each of the other
+     * two doors are goats.  No one ever wanted one of the goats.  But it they had won a goat in
+     * on Let's Make a Deal in the 1960s they might still have a nice little herd of goats.  But if you won a
+     * 1960s-era automobile, if the automobile didn't kill you it would by now be a worthless rusting heap.
+     * What ever happened to those goats, anyway?
+     */
+    Door winningDoor;
+     /**
+     * The Picked door.   The contestant picks a door.
+     */
+    Door pickedDoor;
+    /**
+     * The Shown door.  After the contestant chooses a door, Monty (always, we assume, perhaps unrealistically) opens a door behind which is a goat.  If the contestant's first choice of door (unbeknownst to the contestant) has a car hidden behind it, Monty will open one of the two goat doors selected at random.  If the contestant's first door choice was a goat door, Monty will open the other goat door, not the winning door.  On the actual TV show, Monty did not always offer the contestant a chance to switch doors, reports say.  See Wikipedia.
+     */
+    Door shownDoor;
+    /**
+     * The Switch door.  The contestant has picked one door.  Monty has opened a different door to reveal a goat.  There is one remaining door to which the contestant can opt to switch, forsaking the contestant's originally selected door.
+     */
+    Door switchDoor;
+    /**
+     * The Original choice wins counter.
+     */
     boolean originalChoiceWins;
+    /**
+     * The Switch wins counter.
+     */
     boolean switchWins;
 
-    // the winning and picked doors are randomly selected; they can be the same door or different doors
+    /**
+     * Instantiates a new Game.  The winning and picked doors are randomly selected; they can be the same door or different doors.
+     */
     Game() {
         gameNumber++;
         winningDoor = pickRandomDoor();
         pickedDoor = pickRandomDoor();
-        doorList.remove(winningDoor);
-        doorList.remove(pickedDoor);
-        shownDoor = pickShownDoor(doorList); // After contestant picks a door we assume Monty always opens a goat door and give the contestant the opportunity to switch to the other unopened door.  On the TV game show, however, Monty did not always give the contestant the chance to make such a switch.
+        showableDoorList.remove(winningDoor);
+        showableDoorList.remove(pickedDoor);
+        shownDoor = pickShownDoor(showableDoorList); // After contestant picks a door we assume Monty always opens a goat door and give the contestant the opportunity to switch to the other unopened door.  On the TV game show, however, Monty did not always give the contestant the chance to make such a switch.
         switchDoor = pickSwitchDoor();
 
         if (winningDoor == pickedDoor) {
@@ -55,16 +111,16 @@ public class Game {
     private void repInvariant() {
         // check for disallowed conditions
         if (originalChoiceWins == switchWins) {
-            throw new IllegalStateException("There is only one winning door.  After Monty opens one of the goat doors, there are only two choices for the contestant: stay or switch.  The contestant might choose the winning door by sticking with their original choice or by switching but not both.");
+            throw new IllegalStateException("There is only one winning door.  After Monty opens one of the goat doors, there are only two closed doors for the contestant to choose from: the contestant's originally-selected door or the other door.  The contestant might choose the winning door by sticking with their original choice or by switching but not both.");
         }
         if (shownDoor == winningDoor) {
             throw new IllegalStateException("When inviting the contestant to switch doors, Monty must not show the winning door before contestant has chance to switch doors.");
         }
         if (shownDoor == pickedDoor) {
-            throw new IllegalStateException("Monty must not show the door initially picked by the contestant until contestant has a chance to switch doors.");
+            throw new IllegalStateException("Monty must not open the door initially picked by the contestant until contestant has decided whether or not to switch doors.");
         }
         if (shownDoor == switchDoor) {
-            throw new IllegalStateException("Contestant would not logically choose the opened door behind which a goat has already been revealed.");
+            throw new IllegalStateException("It is assumed that the contestant would not logically choose to switch to the door which has already been opened to reveal a goat.");
         }
     }
 
@@ -73,13 +129,13 @@ public class Game {
         return doorArr[randomNumber];
     }
 
-    // pick the (goat) door that Monty will open before offering to let contestant switch doors; If Monty can choose from two goat doors, he chooses one of the two randomly
+    // Pick the (goat) door that Monty will open before offering to let contestant switch doors; If Monty can choose from two goat doors, he chooses one of the two randomly.
     private Door pickShownDoor(List<Door> doorList) {
         int randomNumber = (new Random()).nextInt(doorList.size());
         return doorList.get(randomNumber);
     }
 
-    // To which door can the contestant switch?  It's the door left after you take away the contestant's first choice door and the goat door Monty opened.
+    // To which door can the contestant switch?  It's the one door left after you take away the contestant's first choice door and the goat door Monty opened.
     private Door pickSwitchDoor() {
         Set<Door> allDoors = new HashSet<>(Arrays.asList(doorArr));
         allDoors.remove(pickedDoor); // Contestant can't switch to the door already chosen. That wouldn't be switching.

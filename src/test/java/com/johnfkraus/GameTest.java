@@ -10,22 +10,34 @@ import java.util.Set;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotSame;
 
+/**
+ * The type Game test.
+ */
 public class GameTest {
 
+    /**
+     * The Game.
+     */
     public Game game;
 
+    /**
+     * Create a Game instance and assign the instance to the game reference.
+     */
     @Before
     public void setup() {
         game = new Game();
     }
 
+    /**
+     * Game rep invariant.  Checking required and disallowed conditions.
+     */
     @Test
     public void gameRepInvariant() {
         assertEquals(3, game.doorArr.length);
-        assertTrue(game.doorList.size() <= 2);
-        assertTrue(game.doorList.size() >= 1);
-        assertFalse(game.doorList.contains(game.pickedDoor));
-        assertFalse(game.doorList.contains(game.winningDoor));
+        assertTrue(game.showableDoorList.size() <= 2);
+        assertTrue(game.showableDoorList.size() >= 1);
+        assertFalse(game.showableDoorList.contains(game.pickedDoor));
+        assertFalse(game.showableDoorList.contains(game.winningDoor));
         // check for disallowed conditions
         // When offering the contestant the chance to switch doors, Monty must not show the winning door
         assertNotSame(game.shownDoor, game.winningDoor);
@@ -34,6 +46,10 @@ public class GameTest {
         // Contestant would not logically choose the opened door behind which a goat has already been revealed.
         assertNotSame(game.shownDoor, game.switchDoor);
     }
+
+    /**
+     * There will be one door to switch to.
+     */
     @Test
     public void thereWillBeOneDoorToSwitchTo() {
         Set<Game.Door> allDoors = new HashSet<>(Arrays.asList(Game.doorArr));
