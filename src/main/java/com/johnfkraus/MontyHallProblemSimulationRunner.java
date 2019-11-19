@@ -3,7 +3,7 @@ package com.johnfkraus;
 /**
  * Class to run multiple iterations of Game
  */
-class MontyHallProblemSimulation {
+class MontyHallProblemSimulationRunner {
     private int stayWins = 0;
     private int switchWins = 0;
     private int numberOfGamesToPlay = 1000;
@@ -31,7 +31,7 @@ class MontyHallProblemSimulation {
      * @param args the input arguments
      */
     public static void main(String... args) {
-        MontyHallProblemSimulation mh = new MontyHallProblemSimulation();
+        MontyHallProblemSimulationRunner mh = new MontyHallProblemSimulationRunner();
         mh.run();
     }
 }
