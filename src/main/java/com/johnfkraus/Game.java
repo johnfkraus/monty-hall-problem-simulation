@@ -37,13 +37,12 @@ public class Game {
      */
     static int gameNumber;
     /**
-     * The the count of how many times not switching led to a win.
-     */
-    /**
      * gameCount is incremented each time a Game instance is created.
      */
     private static int gameCount;
-
+    /**
+     * The the count of how many times not switching led to a win.
+     */
     static int stayWinsCount;
     /**
      * The the count of how many times switching led to a win.
