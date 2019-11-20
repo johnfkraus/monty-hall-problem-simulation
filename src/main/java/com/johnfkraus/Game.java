@@ -4,6 +4,8 @@ import java.util.*;
 
 public class Game {
     private int gameNumber;
+    // gameCount is incremented each time a Game instance is created.
+    private static int gameCount;
     private static Door[] doorArr = {Door.ONE, Door.TWO, Door.THREE}; // there are three doors from which to choose.
     private List<Door> doorList = new ArrayList<>(Arrays.asList(doorArr)); // {Door.ONE, Door.TWO, Door.THREE}));
     Door winningDoor; // the winning door, chosen at random; there is a new car behind this door; behind the other two doors are goats. Is it a little sad that no one ever wanted one of the goats?  If you had won a goat in on Let's Make a Deal in the 1960s you might still have a nice little herd of goats.  But if you won a 1960s-era car, if it didn't kill you it would for sure now be worthless and rusting away in some dump.  What ever happened to those goats, anyway?
@@ -12,6 +14,11 @@ public class Game {
     Door switchDoor; // the remaining door to which the contestant can opt to switch.
     boolean originalChoiceWins;
     boolean switchWins;
+
+    Game() {
+        this(getIncrementedGameCount());
+    }
+
 
     // the winning and picked doors are randomly selected; they can be the same door or different doors
     Game(int gameNumber) {
@@ -49,6 +56,10 @@ public class Game {
         if (shownDoor == switchDoor) {
             throw new RuntimeException("Contestant would not logically choose the opened door behind which a goat has already been revealed.");
         }
+    }
+
+    private static int getIncrementedGameCount() {
+        return ++gameCount;
     }
 
     private static Door pickRandomDoor() {

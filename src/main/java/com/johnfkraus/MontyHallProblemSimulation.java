@@ -3,9 +3,6 @@ package com.johnfkraus;
 import java.util.ArrayList;
 // import java.util.Arrays;
 import java.util.List;
-// import java.util.Set;
-// import java.util.HashSet;
-//import java.util.Random;
 
 enum Door {
     ONE(1), TWO(2), THREE(3);
@@ -24,7 +21,8 @@ class MontyHallProblemSimulation {
     private void run() {
         int runs = 1000;
         for (int i = 0; i < runs; i++) {
-            Game game = new Game(i + 1);
+            //Game game = new Game(i + 1);
+            Game game = new Game();
             if (game.originalChoiceWins) {
                 stayWins++;
             }
