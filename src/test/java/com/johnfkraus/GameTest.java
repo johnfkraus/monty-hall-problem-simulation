@@ -45,6 +45,7 @@ public class GameTest {
         assertNotSame(game.shownDoor, game.pickedDoor);
         // Contestant would not logically choose the opened door behind which a goat has already been revealed.
         assertNotSame(game.shownDoor, game.switchDoor);
+        assertFalse(game.originalChoiceWins == game.switchWins);
     }
 
     /**

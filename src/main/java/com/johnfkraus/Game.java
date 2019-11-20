@@ -39,6 +39,11 @@ public class Game {
     /**
      * The the count of how many times not switching led to a win.
      */
+    /**
+     * gameCount is incremented each time a Game instance is created.
+     */
+    private static int gameCount;
+
     static int stayWinsCount;
     /**
      * The the count of how many times switching led to a win.
@@ -50,7 +55,7 @@ public class Game {
      */
     static Door[] doorArr = {Door.ONE, Door.TWO, Door.THREE};
     /**
-     * The Showable Door list.  The list from which the game show host, Monty, can choose a door to open for the contestant when offering contestant the opportunity to switch doors.  The door Monty opens before inviting the contestant to switch must be (1) a door behind which is a goat (not the winning door); and (2) not the door initially chosen by the contestant.
+     * The Showable Door list.  The list from which the game show host, Monty, can choose a door to open for the contestant when offering contestant the opportunity to switch doors.  The door Monty opens before inviting the contestant to switch must be (1) a door behind which is a goat (not the winning door); and (2) not the door initially chosen by the contestant.  Removed from this list will be: (1) the contestant-picked door and (2) the winning door.
      */
     List<Door> showableDoorList = new ArrayList<>(Arrays.asList(doorArr));
     /**
@@ -74,24 +79,30 @@ public class Game {
      */
     Door switchDoor;
     /**
-     * The Original choice wins counter.
+     * If the Original choice wins then true.
      */
     boolean originalChoiceWins;
     /**
-     * The Switch wins counter.
+     * If the Switch wins then true.
      */
     boolean switchWins;
+
+    Game() {
+        this(getIncrementedGameCount());
+    }
 
     /**
      * Instantiates and completes a single Game.  The winning and picked doors are randomly selected; they can be the same door or different doors.
      */
-    Game() {
-        gameNumber++;
+    Game(int gameNumber) {
+        this.gameNumber = gameNumber;
         winningDoor = pickRandomDoor();
         pickedDoor = pickRandomDoor();
+
         showableDoorList.remove(winningDoor);
         showableDoorList.remove(pickedDoor);
         shownDoor = pickShownDoor(showableDoorList); // After contestant picks a door we assume Monty always opens a goat door and give the contestant the opportunity to switch to the other unopened door.  On the TV game show, however, Monty did not always give the contestant the chance to make such a switch.
+
         switchDoor = pickSwitchDoor();
 
         if (winningDoor == pickedDoor) {
@@ -122,6 +133,10 @@ public class Game {
         }
     }
 
+    private static int getIncrementedGameCount() {
+        return ++gameCount;
+    }
+
     private Door pickRandomDoor() {
         int randomNumber = (new Random()).nextInt(doorArr.length);
         return doorArr[randomNumber];
@@ -143,6 +158,10 @@ public class Game {
         }
         // Return the one and only door remaining.
         return allDoors.iterator().next();
+    }
+
+    public int getGameNumber() {
+        return this.gameNumber;
     }
 
     public String toString() {
