@@ -18,7 +18,7 @@ public class Game {
     Game() {
         this(getIncrementedGameCount());
     }
-    
+
     // the winning and picked doors are randomly selected; they can be the same door or different doors
     Game(int gameNumber) {
         this.gameNumber = gameNumber;
