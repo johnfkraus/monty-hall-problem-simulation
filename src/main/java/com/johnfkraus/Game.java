@@ -18,8 +18,7 @@ public class Game {
     Game() {
         this(getIncrementedGameCount());
     }
-
-
+    
     // the winning and picked doors are randomly selected; they can be the same door or different doors
     Game(int gameNumber) {
         this.gameNumber = gameNumber;
@@ -79,10 +78,7 @@ public class Game {
 
     // To which door can the contestant switch?  It's the door left after you take away the contestant's first choice door and the goat door Monty opened.
     private Door pickSwitchDoor() {
-        Set<Door> allDoors = new HashSet<>();
-        allDoors.add(Door.ONE);
-        allDoors.add(Door.TWO);
-        allDoors.add(Door.THREE);
+        Set<Door> allDoors = new HashSet<>(Arrays.asList(doorArr));
         Set<Door> nonSwitchDoors = new HashSet<>();
         nonSwitchDoors.add(pickedDoor); // Contestant can't switch to the door already chosen.
         nonSwitchDoors.add(shownDoor); // Contestant can't/won't switch to the goat door Monty has opened
