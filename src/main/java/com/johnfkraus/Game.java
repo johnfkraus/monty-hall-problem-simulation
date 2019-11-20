@@ -3,7 +3,7 @@ package com.johnfkraus;
 import java.util.*;
 
 /**
- * The type Game.
+ * The type Game (Let's Make a Deal).
  */
 public class Game {
     /**
@@ -11,60 +11,58 @@ public class Game {
      */
     enum Door {
         /**
-         * One door.
+         * Door number one.
          */
         ONE(1),
         /**
-         * Two door.
+         * Door number two.
          */
         TWO(2),
         /**
-         * Three door.
+         * Door number three.
          */
         THREE(3);
         /**
          * The Door number.
          */
         public final int doorNumber;
+
         Door(int doorNumber) {
             this.doorNumber = doorNumber;
         }
     }
 
     /**
-     * The Game number.
+     * The number of games instantiated.
      */
     static int gameNumber;
     /**
-     * The Stay wins count.
+     * The the count of how many times not switching led to a win.
      */
     static int stayWinsCount;
     /**
-     * The Switch wins count.
+     * The the count of how many times switching led to a win.
      */
     static int switchWinsCount;
 
     /**
-     * There are three closed doors from which the contestant may choose.  Behind one door (the winning door) is the prize: a new car.  Behind the other two doors are goats.  We assume the contestant wants to win a car and doesn't want a goat.
+     * There are three closed doors from which the contestant may choose.  Behind one door (the winning door, selected randomly) is the prize: a new car.  Behind the other two doors are goats.  We assume the contestant wants to win a car and doesn't want a goat.
      */
     static Door[] doorArr = {Door.ONE, Door.TWO, Door.THREE};
     /**
-     * The Showable Door list.  The list from which Monty can choose a door to open for the contestant when
-     * offering contestant the opportunity to switch doors.  The door Monty opens when offering a switch must be (1) a door
-     * behind which is a goat (not the winning door); and (2) not the door initially chosen by the contestant.
+     * The Showable Door list.  The list from which the game show host, Monty, can choose a door to open for the contestant when offering contestant the opportunity to switch doors.  The door Monty opens before inviting the contestant to switch must be (1) a door behind which is a goat (not the winning door); and (2) not the door initially chosen by the contestant.
      */
-// List<Door> allDoors = new ArrayList<>(Arrays.asList(doorArr));
     List<Door> showableDoorList = new ArrayList<>(Arrays.asList(doorArr));
     /**
-     * The Winning door. The winning door is chosen at random.  There is a new car behind this door; behind each of the other
-     * two doors are goats.  No one ever wanted one of the goats.  But it they had won a goat in
-     * on Let's Make a Deal in the 1960s they might still have a nice little herd of goats.  But if you won a
-     * 1960s-era automobile, if the automobile didn't kill you it would by now be a worthless rusting heap.
+     * The Winning door. The winning door is chosen by a pseudo random process.  There is a new car behind this door; behind each of the other
+     * two doors are goats.  No one ever wanted one of the goats.  But if a contestant had won a goat in
+     * on Let's Make a Deal in the 1960s they might still have a nice little herd of goats.  If a contestant won a
+     * 1960s-era automobile, if the unsafe car of that era didn't kill you it would by now be a worthless rusting heap.
      * What ever happened to those goats, anyway?
      */
     Door winningDoor;
-     /**
-     * The Picked door.   The contestant picks a door.
+    /**
+     * The Picked door.   The contestant picks a door.  The selection is simulated by a pseudo random process.
      */
     Door pickedDoor;
     /**
@@ -85,7 +83,7 @@ public class Game {
     boolean switchWins;
 
     /**
-     * Instantiates a new Game.  The winning and picked doors are randomly selected; they can be the same door or different doors.
+     * Instantiates and completes a single Game.  The winning and picked doors are randomly selected; they can be the same door or different doors.
      */
     Game() {
         gameNumber++;
@@ -111,16 +109,16 @@ public class Game {
     private void repInvariant() {
         // check for disallowed conditions
         if (originalChoiceWins == switchWins) {
-            throw new IllegalStateException("There is only one winning door.  After Monty opens one of the goat doors, there are only two closed doors for the contestant to choose from: the contestant's originally-selected door or the other door.  The contestant might choose the winning door by sticking with their original choice or by switching but not both.");
+            throw new IllegalStateException("Only one strategy, switching or not switching, can win.  There should be only one winning door.  After Monty opens one of the goat doors, there are only two closed doors for the contestant to choose from: the contestant's originally-selected door or the other door.  The contestant might choose the winning door by sticking with their original choice or by switching but not both.");
         }
         if (shownDoor == winningDoor) {
-            throw new IllegalStateException("When inviting the contestant to switch doors, Monty must not show the winning door before contestant has chance to switch doors.");
+            throw new IllegalStateException("When inviting the contestant to switch doors, Monty must not show the winning door before contestant has chance to switch doors.  Instead, Monty must show a goat door.");
         }
         if (shownDoor == pickedDoor) {
             throw new IllegalStateException("Monty must not open the door initially picked by the contestant until contestant has decided whether or not to switch doors.");
         }
         if (shownDoor == switchDoor) {
-            throw new IllegalStateException("It is assumed that the contestant would not logically choose to switch to the door which has already been opened to reveal a goat.");
+            throw new IllegalStateException("It is assumed that the contestant would not logically choose to switch to the door which Monty has already opened to reveal a goat.");
         }
     }
 
@@ -146,6 +144,7 @@ public class Game {
         // Return the one and only door remaining.
         return allDoors.iterator().next();
     }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Game #")

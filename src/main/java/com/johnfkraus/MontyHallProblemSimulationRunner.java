@@ -1,7 +1,7 @@
 package com.johnfkraus;
 
 /**
- * Class to run multiple iterations of Game
+ * Class to run multiple iterations of Let's Make A Deal Game
  */
 class MontyHallProblemSimulationRunner {
     private int stayWins = 0;
