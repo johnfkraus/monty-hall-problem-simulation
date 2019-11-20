@@ -30,7 +30,6 @@ build/
 ### VS Code ###
 .vscode/
 
-doc/*
 *.class
 **/*.class
 .DS_Store
