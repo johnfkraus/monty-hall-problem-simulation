@@ -1,4 +1,4 @@
-![](LMADlogo2011.jpg)
+![](LMADlogo2011-cropped.jpg)
 
 # monty-hall-problem-simulation
 
