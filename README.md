@@ -7,3 +7,4 @@ This computer model demonstrates that under certain specified conditions switchi
 
 ![](LMADlogo2011.jpg)
 
+![alt text](https://github.com/johnfkraus/15puzzle/blob/master/15Puzzle.png "John's 15-Tile Puzzle")
